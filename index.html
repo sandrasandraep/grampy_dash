@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grampa Dash</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-label="Grampa Dash game">
+      <section class="topbar" aria-label="Game status">
+        <div>
+          <p class="eyebrow">Grampa Dash</p>
+          <h1>Keep Grampa Cube moving.</h1>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div>
+            <span>Score</span>
+            <strong id="score">0</strong>
+          </div>
+          <div>
+            <span>Best</span>
+            <strong id="best">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage-wrap">
+        <canvas id="gameCanvas" width="1280" height="720" aria-label="Playable Grampa Dash canvas"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="panel">
+            <h2 id="overlayTitle">Grampa Dash</h2>
+            <p id="overlayText">Jump over spikes, land on top of blocks, and keep the grampa cube upright.</p>
+            <button id="startButton" type="button">Start</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Controls">
+        <div class="key">Space</div>
+        <p>Jump</p>
+        <div class="key">Click</div>
+        <p>Jump or restart</p>
+        <div class="key">Tap</div>
+        <p>Mobile jump</p>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
