@@ -210,7 +210,7 @@ function endGame() {
   localStorage.setItem(BEST_KEY, String(best));
   bestEl.textContent = best;
   overlayTitle.textContent = "Run Over";
-  overlayText.textContent = `Score ${score}. Grampa Cube is ready to try again.`;
+  overlayText.textContent = `Score ${score}. Grampa is ready to try again.`;
   startButton.textContent = "Restart";
   overlay.classList.remove("hidden");
 }
@@ -538,7 +538,7 @@ function draw() {
   drawBackground();
   drawObstacles();
   drawSparks();
-  drawGrampaCube();
+  drawRunningGrampa();
   drawForeground();
   ctx.restore();
 }
@@ -625,55 +625,66 @@ function drawSparks() {
   });
 }
 
-function drawGrampaCube() {
-  const cx = player.x + player.size / 2;
-  const cy = player.y + player.size / 2;
+function drawRunningGrampa() {
+  const stride = status === "running" && player.grounded ? Math.sin(distance / 24) : 0.7;
+  const bob = status === "running" && player.grounded ? -Math.abs(stride) * 2 : 0;
   ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(player.rotation);
-  ctx.translate(-player.size / 2, -player.size / 2);
+  ctx.translate(player.x, player.y + bob);
+  ctx.scale(player.size / 76, player.size / 76);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
 
-  ctx.fillStyle = palettes.cubeDark;
-  roundedRect(0, 0, player.size, player.size, 10);
-  ctx.fillStyle = palettes.cube;
-  roundedRect(5, 5, player.size - 10, player.size - 12, 8);
-
-  ctx.fillStyle = palettes.hair;
-  roundedRect(9, -8, 58, 18, 9);
-  for (let i = 0; i < 5; i += 1) {
+  function limb(points, color, width) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
     ctx.beginPath();
-    ctx.arc(14 + i * 12, 4, 10, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(points[0], points[1]);
+    for (let i = 2; i < points.length; i += 2) ctx.lineTo(points[i], points[i + 1]);
+    ctx.stroke();
   }
 
-  ctx.fillStyle = palettes.glasses;
-  roundedRect(15, 25, 18, 15, 5);
-  roundedRect(43, 25, 18, 15, 5);
-  ctx.fillRect(33, 31, 10, 4);
+  // Keep the feet inside the original player bounds so landings still line up.
+  const backFoot = 33 - stride * 19;
+  const frontFoot = 38 + stride * 19;
+  limb([33, 52, 28 - stride * 10, 62, backFoot, 70], "#68a9ff", 9);
+  limb([39, 53, 44 + stride * 10, 62, frontFoot, 70], "#4386ce", 9);
+  limb([backFoot - 3, 72, backFoot + 7, 72], "#f06455", 7);
+  limb([frontFoot - 3, 72, frontFoot + 8, 72], "#f06455", 7);
+  limb([30, 31, 16 - stride * 4, 42, 23, 47], "#edbf90", 7);
 
-  ctx.fillStyle = palettes.lens;
-  roundedRect(18, 28, 12, 9, 4);
-  roundedRect(46, 28, 12, 9, 4);
+  ctx.fillStyle = "#62d37a";
+  roundedRect(23, 28, 30, 28, 11);
+  limb([33, 31, 31, 51], "#f4f0e7", 3);
+  limb([45, 32, 43, 52], "#f4f0e7", 3);
+  limb([48, 35, 58 + stride * 4, 44, 65, 34], "#edbf90", 7);
 
-  ctx.fillStyle = "#2a1a12";
-  ctx.fillRect(22, 31, 4, 4);
-  ctx.fillRect(50, 31, 4, 4);
-
-  ctx.fillStyle = palettes.mustache;
-  roundedRect(19, 48, 18, 9, 8);
-  roundedRect(39, 48, 18, 9, 8);
-  ctx.fillStyle = "#4b2e21";
-  roundedRect(34, 44, 8, 10, 5);
-
-  ctx.strokeStyle = palettes.cane;
-  ctx.lineWidth = 5;
-  ctx.lineCap = "round";
+  ctx.fillStyle = "#edbf90";
   ctx.beginPath();
-  ctx.moveTo(63, 43);
-  ctx.quadraticCurveTo(80, 44, 70, 58);
-  ctx.moveTo(68, 57);
-  ctx.lineTo(62, 75);
-  ctx.stroke();
+  ctx.ellipse(47, 17, 20, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = palettes.hair;
+  for (const [x, y, r] of [[29, 13, 8], [31, 4, 8], [40, 0, 8], [51, 1, 7]]) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = palettes.glasses;
+  roundedRect(34, 11, 13, 11, 3);
+  roundedRect(50, 12, 13, 11, 3);
+  ctx.fillRect(46, 15, 5, 3);
+  ctx.fillStyle = palettes.lens;
+  roundedRect(36, 13, 9, 7, 2);
+  roundedRect(52, 14, 9, 7, 2);
+  ctx.fillStyle = palettes.glasses;
+  ctx.fillRect(41, 15, 3, 3);
+  ctx.fillRect(57, 16, 3, 3);
+  ctx.fillStyle = "#edbf90";
+  ctx.beginPath();
+  ctx.ellipse(65, 23, 8, 5, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = palettes.mustache;
+  roundedRect(47, 25, 19, 6, 3);
+  limb([54, 33, 62, 33], "#4b2e21", 2);
 
   ctx.restore();
 }

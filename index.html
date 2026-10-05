@@ -4,14 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grampa Dash</title>
+    <link rel="icon" type="image/svg+xml" href="grampa-icon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="game-shell" aria-label="Grampa Dash game">
       <section class="topbar" aria-label="Game status">
-        <div>
+        <div class="brand">
+          <img class="brand-icon" src="grampa-icon.svg" alt="Funny grandpa running in red sneakers" width="72" height="72" />
+          <div>
           <p class="eyebrow">Grampa Dash</p>
-          <h1>Keep Grampa Cube moving.</h1>
+          <h1>Go, Grampa, go!</h1>
+          </div>
         </div>
         <div class="stats" aria-live="polite">
           <div>
@@ -30,7 +34,7 @@
         <div class="overlay" id="overlay">
           <div class="panel">
             <h2 id="overlayTitle">Grampa Dash</h2>
-            <p id="overlayText">Jump over spikes, land on top of blocks, and keep the grampa cube upright.</p>
+            <p id="overlayText">Grampa's got places to be!</p>
             <button id="startButton" type="button">Start</button>
           </div>
         </div>

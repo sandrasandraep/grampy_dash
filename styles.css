@@ -58,6 +58,19 @@ body {
   text-transform: uppercase;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
 h1,
 h2,
 p {
